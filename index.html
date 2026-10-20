@@ -8,7 +8,7 @@
     :root {
       --bg-dark: #0f0f13;
       --panel: #1a1b21;
-      --accent: #ff3e00;       /* огненно-красный */
+      --accent: #ff3e00;
       --accent-glow: #ff5b33;
       --text-main: #ffffff;
       --text-muted: #a0a0b0;
@@ -94,6 +94,71 @@
       box-shadow: 0 6px 20px rgba(255, 62, 0, 0.6);
     }
 
+    /* Upgrade Wheel Section */
+    #upgrade-wheel-section {
+      padding: 80px 0;
+      text-align: center;
+      position: relative;
+    }
+    .wheel-wrapper {
+      width: 360px;
+      height: 360px;
+      margin: 0 auto 30px;
+      position: relative;
+      overflow: hidden;
+      border-radius: 50%;
+      border: 6px solid #2a2b35;
+      box-shadow: 0 0 30px rgba(255, 62, 0, 0.2);
+    }
+    .wheel {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      position: absolute;
+      top: 0; left: 0;
+      transform-origin: center;
+      transition: transform 4s cubic-bezier(0.17, 0.67, 0.08, 0.99); /* инерция */
+      will-change: transform;
+    }
+    .wheel-pointer {
+      position: absolute;
+      top: -20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0; height: 0;
+      border-left: 15px solid transparent;
+      border-right: 15px solid transparent;
+      border-top: 40px solid var(--accent-glow);
+      z-index: 10;
+    }
+    .spin-btn {
+      padding: 18px 40px;
+      font-size: 18px;
+      background: #1a1b21;
+      color: var(--accent);
+      border: 2px solid var(--accent);
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 700;
+      transition: all 0.3s;
+    }
+    .spin-btn:hover:not(:disabled) {
+      background: var(--accent);
+      color: #000;
+      box-shadow: 0 0 15px var(--accent);
+    }
+    .spin-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      filter: grayscale(1);
+    }
+    .result-msg {
+      margin-top: 25px;
+      font-size: 20px;
+      font-weight: 700;
+      min-height: 28px;
+    }
+
     /* Features Grid */
     .features {
       padding: 80px 0;
@@ -157,7 +222,8 @@
 
     @media (max-width: 768px) {
       .hero h1 { font-size: 32px; }
-      .nav-links { display: none; } /* упрощение для мобилок */
+      .nav-links { display: none; }
+      .wheel-wrapper { width: 280px; height: 280px; }
     }
   </style>
 </head>
@@ -180,7 +246,20 @@
     <div class="container">
       <h1>Твой дроп — твой уровень</h1>
       <p>SanyaDrop: только топовые предметы, быстрые раздачи и максимум адреналина. Никаких задержек — только чистый дроп.</p>
-      <a href="#drops" class="cta-btn">Получить дроп</a>
+      <a href="#upgrade-wheel-section" class="cta-btn">Испытать удачу</a>
+    </div>
+  </section>
+
+  <!-- Колесо апгрейда -->
+  <section id="upgrade-wheel-section">
+    <div class="container">
+      <h2 class="section-title">Колесо апгрейда</h2>
+      <div class="wheel-wrapper">
+        <div class="wheel" id="wheel"></div>
+        <div class="wheel-pointer"></div>
+      </div>
+      <button class="spin-btn" id="spinBtn">КРУТИТЬ</button>
+      <div class="result-msg" id="resultMsg"></div>
     </div>
   </section>
 
@@ -246,5 +325,69 @@
       </div>
     </div>
   </footer>
-</body>
-</html>
+
+  <script>
+    const wheel = document.getElementById('wheel');
+    const spinBtn = document.getElementById('spinBtn');
+    const resultMsg = document.getElementById('resultMsg');
+
+    // Сектора: цвет + текст приза
+    const prizes = [
+      { color: '#ff3e00', label: 'EPIC DROP' },
+      { color: '#00e5ff', label: 'RARE ITEM' },
+      { color: '#9b59b6', label: 'LEGENDARY' },
+      { color: '#f1c40f', label: 'GOLDEN BOX' },
+      { color: '#2ecc71', label: 'BOOST +50%' },
+      { color: '#e74c3c', label: 'SECRET LOOT' },
+      { color: '#3498db', label: 'SILVER PACK' },
+      { color: '#95a5a6', label: 'COMMON DROP' }
+    ];
+
+    const segments = prizes.length;
+    const degPerSegment = 360 / segments;
+
+    // Рисуем колесо
+    prizes.forEach((prize, i) => {
+      const slice = document.createElement('div');
+      slice.style.position = 'absolute';
+      slice.style.width = '100%';
+      slice.style.height = '100%';
+      slice.style.clipPath = `polygon(50% 0, 50% 100%, ${50 + Math.cos(i * degPerSegment * Math.PI / 180) * 50}% ${50 + Math.sin(i * degPerSegment * Math.PI / 180) * 50}%)`;
+      // Упрощённый вариант clipPath для секторов (более стабильный):
+      slice.style.background = prize.color;
+      slice.style.transform = `rotate(${i * degPerSegment}deg)`;
+      slice.style.transformOrigin = 'center';
+      wheel.appendChild(slice);
+
+      // Текст внутри сектора (опционально, можно убрать, если мешает)
+      const label = document.createElement('div');
+      label.textContent = prize.label;
+      label.style.color = '#000';
+      label.style.fontWeight = 'bold';
+      label.style.fontSize = '14px';
+      label.style.textAlign = 'center';
+      label.style.pointerEvents = 'none';
+      label.style.position = 'absolute';
+      label.style.top = '50%';
+      label.style.left = '50%';
+      label.style.transform = 'translate(-50%, -50%) rotate(-' + (i * degPerSegment) + 'deg)';
+      slice.appendChild(label);
+    });
+
+    let currentRotation = 0;
+
+    spinBtn.addEventListener('click', () => {
+      spinBtn.disabled = true;
+      resultMsg.textContent = '';
+
+      const randomOffset = Math.floor(Math.random() * 360);
+      // Добавляем случайный оборот (3–5 полных) + рандомный угол
+      const extraTurns = Math.floor(Math.random() * 3) + 3;
+      const totalRotation = currentRotation + (extraTurns * 360) + randomOffset;
+
+      wheel.style.transition = 'transform 4s cubic-bezier(0.17, 0.67, 0.08, 0.99)';
+      wheel.style.transform = `rotate(${totalRotation}deg)`;
+
+      setTimeout(() => {
+        const finalAngle = totalRotation % 360;
+        const segmentIndex = Math.floor((36
