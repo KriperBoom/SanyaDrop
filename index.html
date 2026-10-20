@@ -1,5 +1,250 @@
-<title>SanyaDrop</title>
+<!DOCTYPE html>
+<html lang="ru">
 <head>
-  <h1>SanyaDrop</h1>
-  </h1>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SanyaDrop — твой дроп уровня</title>
+  <style>
+    :root {
+      --bg-dark: #0f0f13;
+      --panel: #1a1b21;
+      --accent: #ff3e00;       /* огненно-красный */
+      --accent-glow: #ff5b33;
+      --text-main: #ffffff;
+      --text-muted: #a0a0b0;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+      line-height: 1.5;
+    }
+
+    a { text-decoration: none; color: inherit; }
+    ul { list-style: none; }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* Header / Nav */
+    header {
+      padding: 20px 0;
+      border-bottom: 1px solid #222;
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: -1px;
+      text-transform: uppercase;
+    }
+    .logo span { color: var(--accent); }
+
+    .nav-links { display: flex; gap: 30px; }
+    .nav-links a {
+      color: var(--text-muted);
+      transition: color 0.3s;
+    }
+    .nav-links a:hover { color: var(--text-main); }
+
+    /* Hero */
+    .hero {
+      padding: 100px 0 60px;
+      text-align: center;
+    }
+    .hero h1 {
+      font-size: 48px;
+      line-height: 1.1;
+      margin-bottom: 20px;
+      background: linear-gradient(90deg, #fff, var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero p {
+      font-size: 18px;
+      color: var(--text-muted);
+      max-width: 600px;
+      margin: 0 auto 40px;
+    }
+
+    .cta-btn {
+      display: inline-block;
+      padding: 16px 32px;
+      background: var(--accent);
+      color: #000;
+      font-weight: 700;
+      border-radius: 4px;
+      box-shadow: 0 4px 15px rgba(255, 62, 0, 0.4);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .cta-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(255, 62, 0, 0.6);
+    }
+
+    /* Features Grid */
+    .features {
+      padding: 80px 0;
+    }
+    .section-title {
+      text-align: center;
+      font-size: 32px;
+      margin-bottom: 50px;
+    }
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+    }
+    .feature-card {
+      background: var(--panel);
+      padding: 30px;
+      border: 1px solid #2a2b35;
+      border-radius: 8px;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+    .feature-card:hover {
+      border-color: var(--accent-glow);
+      transform: translateY(-5px);
+    }
+    .feature-icon {
+      font-size: 36px;
+      margin-bottom: 15px;
+    }
+    .feature-card h3 { margin-bottom: 12px; }
+    .feature-card p { color: var(--text-muted); }
+
+    /* Drops Section */
+    .drops {
+      padding: 80px 0;
+      background: #14151a;
+    }
+    .drop-item {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      padding: 20px 0;
+      border-bottom: 1px solid #222;
+    }
+    .drop-info h4 { margin-bottom: 6px; }
+    .drop-price {
+      color: var(--accent);
+      font-weight: 700;
+      font-size: 18px;
+    }
+
+    /* Footer */
+    footer {
+      padding: 60px 0 20px;
+      border-top: 1px solid #222;
+      color: var(--text-muted);
+      text-align: center;
+    }
+    .socials { margin-top: 20px; }
+    .socials a { margin: 0 10px; }
+
+    @media (max-width: 768px) {
+      .hero h1 { font-size: 32px; }
+      .nav-links { display: none; } /* упрощение для мобилок */
+    }
+  </style>
 </head>
+<body>
+  <header>
+    <div class="container">
+      <nav>
+        <div class="logo">Sanya<span>Drop</span></div>
+        <ul class="nav-links">
+          <li><a href="#features">Преимущества</a></li>
+          <li><a href="#drops">Дропы</a></li>
+          <li><a href="#about">О нас</a></li>
+          <li><a href="#contact">Контакты</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="container">
+      <h1>Твой дроп — твой уровень</h1>
+      <p>SanyaDrop: только топовые предметы, быстрые раздачи и максимум адреналина. Никаких задержек — только чистый дроп.</p>
+      <a href="#drops" class="cta-btn">Получить дроп</a>
+    </div>
+  </section>
+
+  <section id="features" class="features">
+    <div class="container">
+      <h2 class="section-title">Почему выбирают SanyaDrop</h2>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">⚡</div>
+          <h3>Мгновенные дропы</h3>
+          <p>Никаких очередей — система раздает предметы сразу, как только они появляются.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🛡️</div>
+          <h3>Безопасность</h3>
+          <p>Все раздачи проходят через проверенную систему. Твои данные под защитой.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">💎</div>
+          <h3>Редкие предметы</h3>
+          <p>Только лимитированные и эксклюзивные вещи, которые сложно найти в обычных магазинах.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="drops" class="drops">
+    <div class="container">
+      <h2 class="section-title">Ближайшие дропы</h2>
+      <div class="drop-list">
+        <div class="drop-item">
+          <div class="drop-info">
+            <h4>Limited Edition Skin</h4>
+            <p>Эксклюзивный скин для топовой игры — только 100 штук.</p>
+          </div>
+          <div class="drop-price">FREE DROP</div>
+        </div>
+        <div class="drop-item">
+          <div class="drop-info">
+            <h4>Premium Access Pass</h4>
+            <p>Доступ ко всем закрытым ивентам на 30 дней.</p>
+          </div>
+          <div class="drop-price">199 ₽</div>
+        </div>
+        <div class="drop-item">
+          <div class="drop-info">
+            <h4>Collector’s Box</h4>
+            <p>Набор редких предметов + уникальный значок.</p>
+          </div>
+          <div class="drop-price">499 ₽</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer id="contact">
+    <div class="container">
+      <p>&copy; 2026 SanyaDrop. Все права защищены.</p>
+      <div class="socials">
+        <a href="#">Telegram</a>
+        <a href="#">VK</a>
+        <a href="#">Discord</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
